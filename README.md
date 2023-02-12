@@ -1,2 +1,2 @@
 # HotelManagement
-Creating Apis in javascript using NodeJs and ExpressJs for a Hotel Management Project
+This Repo contains Apis made in Vanilla javascript using NodeJs and ExpressJs that could be used for a Hotel Management Project.
