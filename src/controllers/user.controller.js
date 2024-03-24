@@ -1,29 +1,33 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/user.model.js';
+import { userService } from '../services/index.service.js';
 
 // Controller function for user registration
 export const register = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, role } = req.body;
 
     // Check if user already exists
-    const existingUser = await User.findOne({ username });
+    const existingUser = await userService.find({ username });
     if (existingUser) {
-      return res.status(400).json({ message: 'Username already exists, rename thineself human.' });
+      return res.status(400).json({ message: 'Username already exists, please try another username.' });
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    req.body.password = await bcrypt.hash(password, 10);
 
     // To create a new user
-    const newUser = new User({ username, password: hashedPassword });
-    await newUser.save();
+    const newUser = await userService.create(req.body);
+    const payload = { _id: newUser._id, username: newUser.username, createdAt: newUser.createdAt }
 
-    res.status(201).json({ message: 'User registered successfully', data: newUser });
+    // Generate JWT token
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.cookie('token', token, {httpOnly: true})
+    
+    return res.status(201).json({ message: 'User registered successfully!', data: payload, token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -33,23 +37,26 @@ export const login = async (req, res) => {
     const { username, password } = req.body;
 
     // Check if user exists
-    const user = await User.findOne({ username });
+    const user = await userService.find({ username });
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'This user does not exist' });
     }
 
     // Check if password is correct
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const payload = { _id: user._id, username: user.username, createdAt: user.createdAt }
 
-    res.status(200).json({ message: 'Login successful', token });
+    // Generate JWT token
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.cookie('token', token, {httpOnly: true})
+
+    return res.status(200).json({ message: 'Login successful', data: payload, token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: error.message });
   }
 };

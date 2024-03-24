@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import roomTypeController from '../controllers/roomType.controller.js';
-// import authMiddleware from '../middlewares/authMiddleware.js';
-// import authorizationMiddleware from '../middlewares/authorizationMiddleware.js';
-// import validationMiddleware from '../middlewares/validationMiddleware.js';
+import authenticate from "../middlewares/authenticate.middleware.js"
+import validate from '../middlewares/validate.middleware.js';
+import { CreateRoomTypeSchema } from '../validations/roomType.validation.js';
 
 const roomTypeRouter = Router();
 
 // POST endpoint for creating a new room type
-roomTypeRouter.post('/', 
+roomTypeRouter.post('/', authenticate, validate(CreateRoomTypeSchema),
   roomTypeController.createRoomType
 );
 
@@ -15,12 +15,12 @@ roomTypeRouter.post('/',
 roomTypeRouter.get('/', roomTypeController.getAllRoomTypes);
 
 // GET endpoint for getting a room type by ID
-roomTypeRouter.get('/:id', roomTypeController.getRoomTypeById);
+roomTypeRouter.get('/:id', roomTypeController.getARoomType);
 
 // PATCH endpoint for updating a room type by ID
-roomTypeRouter.patch('/:id', roomTypeController.updateRoomTypeById);
+roomTypeRouter.patch('/:id', roomTypeController.updateRoomType);
 
 // DELETE endpoint for deleting a room type by ID
-roomTypeRouter.delete('/:id', roomTypeController.deleteRoomTypeById);
+roomTypeRouter.delete('/:id', roomTypeController.deleteRoomType);
 
 export default roomTypeRouter;

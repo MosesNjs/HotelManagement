@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken' 
 
-const secretKey = process.env.JWT_SECRET_KEY
+const secretKey = process.env.JWT_SECRET
 
 // Generates a token by signing a user's unique details against a secret key whenever they sign in.
 export const generateToken = async (payload, expiresIn) => {
