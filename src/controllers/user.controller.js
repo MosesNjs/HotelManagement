@@ -52,7 +52,7 @@ export const login = async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.cookie('token', token, {httpOnly: true})
+    // res.cookie('token', token, {httpOnly: true})
 
     return res.status(200).json({ message: 'Login successful', data: payload, token });
   } catch (error) {

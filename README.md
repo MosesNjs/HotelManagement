@@ -1,4 +1,4 @@
-# Learnable task X
+# Hotel Rwanda
 ---
 
 # Hotel Rooms Management System
@@ -23,32 +23,26 @@ The API key is "learnable.task.X"
 
 2. Install dependencies:
    ```bash
-   npm install winston
-   npm install mongoose
-   npm install express
-   npm install nodemon
-   npm install chai sinon --save-dev
-   npm install mocha
-   npm install supertest
-   npm install bcrypt jsonwebtoken joi
+   npm install
    ```
 3. The dotenv file includes the following
-   - PORT=5000
-   - MONGODB_URI: mongodb+srv://Admin:admin@mosesnj.51rseyy.mongodb.net/
-4. Start the server:
+   - PORT=<your port>
+   - MONGODB_URI=<your mongo uri>
+   - JWT_SECRET=<your jwt secret>
+4. Start the server in development mode:
    ```bash
-   npm start
+   npm run dev
    ```
 
 ## API Endpoints
 
 ### Room Types
 
-- **POST /api/v1/roomTypes**: Create a new room type
-- **GET /api/v1/roomTypes**: Get all room types
-- **GET /api/v1/roomTypes/:id**: Get a room type by ID
-- **PATCH /api/v1/roomTypes/:id**: Update a room type by ID
-- **DELETE /api/v1/roomTypes/:id**: Delete a room type by ID
+- **POST /api/v1/room-types**: Create a new room type
+- **GET /api/v1/room-types**: Get all room types
+- **GET /api/v1/room-types/:id**: Get a room type by ID
+- **PATCH /api/v1/room-types/:id**: Update a room type by ID
+- **DELETE /api/v1/room-types/:id**: Delete a room type by ID
 
 ### Rooms
 
@@ -57,15 +51,11 @@ The API key is "learnable.task.X"
 - **GET /api/v1/rooms/:id**: Get a room by ID
 - **PATCH /api/v1/rooms/:id**: Update a room by ID
 - **DELETE /api/v1/rooms/:id**: Delete a room by ID
-
-
-
 ```
+
 ## Technologies Used
 
 - Node.js
 - Express.js
 - MongoDB
 - Mongoose
-- Chai sinon
-- Mocha
