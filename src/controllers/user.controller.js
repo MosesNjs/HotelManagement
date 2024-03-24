@@ -5,7 +5,7 @@ import { userService } from '../services/index.service.js';
 // Controller function for user registration
 export const register = async (req, res) => {
   try {
-    const { username, password, role } = req.body;
+    const { username, password } = req.body;
 
     // Check if user already exists
     const existingUser = await userService.find({ username });
